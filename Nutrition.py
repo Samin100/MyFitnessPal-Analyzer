@@ -1,7 +1,7 @@
 import myfitnesspal
 
 client = myfitnesspal.Client('samin100')
-day = client.get_date(2016, 12, 25)  # (year, month, day) format
+day = client.get_date(2016, 12, 28)  # (year, month, day) format
 
 
 # an example of accessing nutrition data with the API

@@ -13,7 +13,7 @@ This application is in the planning stage. The data we have is essentially what 
 Here's a list of features to be implemented:
 
 <ol>
-  <li>calorie averages (weekly/monthy/custom period)</li>
+  <li>calorie averages (weekly/monthly/custom period)</li>
   <li>most common food/meal</li>
   <li>highest/lowest calorie days</li>
   <li>macronutrient ratios</li>

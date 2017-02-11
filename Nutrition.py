@@ -1,37 +1,17 @@
 import myfitnesspal
-import datetime
-from datetime import datetime as dt
-from datetime import timedelta
 
 
-sharif = 'samin100'
-issa = 'aladdin_heems'
+class User(object):  # all (new) python classes inherit from the object class
 
-client = myfitnesspal.Client(issa)
+    def __init__(self, client):  # constructor and instance variables
+        self.client = client
+        self.min_threshold = 800
+        self.username = client.effective_username
 
-
-day = client.get_date(datetime.date.today())  # (year, month, day) format
-
-
-# an example of accessing nutrition data with the API
-print('Meals ate on ' + str(day.date) + '\n')
-
-mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snacks']
-typeCount = 0
-dayTotal = 0
+    def get_meals(self, days):
+        return self.client
 
 
-for meal in day.meals:
-    mealTotal = 0
-    print(mealTypes[typeCount] + ': ')
-    for entry in meal.entries:
-        print(entry.name)  # entry.name gives us only the name of the food as a string, not it's nutritional data
-        mealTotal += entry['calories']
-
-    print('Meal total: ' + str(mealTotal) + ' calories\n')
-    dayTotal += mealTotal
-    typeCount += 1
-
-
-print('Daily today: ' + str(dayTotal) + ' calories')
-
+#  TODO: calculate_average function
+#  TODO: max_day function
+#  TODO: min_day function

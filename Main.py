@@ -1,8 +1,7 @@
-import User
+import Nutrition
 import myfitnesspal
 
-client = myfitnesspal.Client('samin100')
+sharif = myfitnesspal.Client('samin100')
+issa = myfitnesspal.Client('aladdin_heems')
 
-samin = User.User(client)
-
-print(samin)
+samin = Nutrition.User('samin100')

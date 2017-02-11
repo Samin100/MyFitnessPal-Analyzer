@@ -10,28 +10,82 @@ issa = 'aladdin_heems'
 
 client = myfitnesspal.Client(sharif)
 
-def calculate_average_daily(type, start_date, end_date):
+
+def calculate_average_daily(nutrient, start_date, end_date):  # calories, carbohydrates, fat, protein, sodium, sugar
 
     # swaps dates if they were given backwards
     if start_date > end_date:
         start_date, end_date = end_date, start_date
 
-    sumCalories = 0
-    days = (end_date - start_date).days
-    print(days)
+    total = 0
+    valid_days = 0
 
     while end_date > start_date:
 
-        print(end_date)
+        current_day = client.get_date(end_date)
+        try:
+            calories = current_day.totals['calories']
+            if calories > 1500:
+                total += current_day.totals[nutrient]
+                valid_days += 1
+
+        except KeyError:
+            pass
+
+        end_date -= timedelta(days=1)
+    return round(total / valid_days)
+
+def calculate_average_macro_ratio(start_date, end_date):
+    # swaps dates if they were given backwards
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+
+    macro_totals = {'carbohydrates': 0, 'fat': 0, 'protein': 0}
+
+    valid_days = 0
+
+    while end_date > start_date:
+
+        current_day = client.get_date(end_date)
+        try:
+            calories = current_day.totals['calories']
+            if calories > 1500:
+                print(end_date)
+                macro_totals['carbohydrates'] += current_day.totals['carbohydrates']
+                macro_totals['fat'] = current_day.totals['fat']
+                macro_totals['protein'] = current_day.totals['protein']
+                valid_days += 1
+                pprint.pprint(macro_totals)
+
+        except KeyError:
+            pass
+
         end_date -= timedelta(days=1)
 
+    final_macro_total = 0
+
+    for key, value in macro_totals.items():
+        final_macro_total += value
+
+    print('Final macro total: ' + str(final_macro_total))
+
+
+    macro_ratios = {'carbohydrates': 0, 'fat': 0, 'protein': 0}
+
+    for key, value in macro_totals.items():
+        print(key + ' ' + str(value))
+        print(value / final_macro_total)
+
+
+
+    pprint.pprint(macro_ratios)
+
+
+# --------------------------------------Start of testing--------------------------------------
 
 date1 = datetime.date.today() - timedelta(days=1)
-date2 = datetime.date.today() - datetime.timedelta(days=30)
-print(date1)
-print(date2)
-calculate_average_daily('calories', date1, date2)
-
+date2 = datetime.date.today() - datetime.timedelta(days=7)
+calculate_average_macro_ratio(date1, date2)
 
 quit()
 

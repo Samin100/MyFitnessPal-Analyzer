@@ -1,3 +1,4 @@
 .idea/
 __pycache__/
 /mysite/mysite/secrets.py
+.DS_STORE

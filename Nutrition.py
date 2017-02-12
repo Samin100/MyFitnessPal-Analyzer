@@ -1,16 +1,16 @@
 from datetime import timedelta
 import myfitnesspal
+from pprint import pprint
 
 
-class User(object):  # all (new) python classes inherit from the object class
+class User(object):  # python classes inherit from the object class
 
-    def __init__(self, username):  # constructor and instance variables
+    def __init__(self, client):  # constructor and instance variables
         """
         Constructor that takes a MFP client as a param.
-        :param client: MFP.client client
+        :param client: myfitnesspal client object
         """
-        self.username = username
-        self.client = myfitnesspal.Client(username)
+        self.client = client
         self.MIN_CALORIE = 1000
 
     def calculate_average_daily(self, nutrient, start_date, end_date):
@@ -125,3 +125,11 @@ class User(object):  # all (new) python classes inherit from the object class
             end_date -= timedelta(days=1)
 
         return max_day
+
+    def get_meals(self, date):
+        """
+        Gets all the meals for a given date.
+        :param date: datetime date object
+        :return: dictionary of meals
+        """
+        return self.client.get_date(date).get_as_dict()

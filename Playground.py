@@ -1,7 +1,7 @@
 import myfitnesspal
 import datetime
 import time
-import pprint
+from pprint import pprint
 from datetime import datetime as dt
 from datetime import timedelta
 
@@ -206,4 +206,3 @@ for meal in day.meals:
 
 
 print('Daily today: ' + str(dayTotal) + ' calories')
-

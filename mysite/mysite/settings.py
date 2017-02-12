@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-#  loads the secret key from a local secrets.json file
+# Loads the secret key from a local secrets.json file
 with open('secrets.json') as secrets:
     key = json.load(secrets)
 
@@ -38,6 +38,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'NutritionAnalyzer',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -1,5 +1,6 @@
 import myfitnesspal
 import datetime
+import time
 import pprint
 from datetime import datetime as dt
 from datetime import timedelta
@@ -127,16 +128,55 @@ def find_day_max(nutrient, start_date, end_date):
 
         end_date -= timedelta(days=1)
 
-    return (max_day, client.get_date(max_day).totals)
+    return max_day
 
+def find_day_min(nutrient, start_date, end_date):
+    """
+    Locates the day in a given range which has the min nutrient.
+    :param nutrient: should be one of the following strings: calories, carbohydrates, fat, protein, sodium, sugar
+    :param start_date: datetime date object
+    :param end_date: datetime date object
+    :return: a datetime date object
+    """
 
+    # swaps dates if they were given backwards
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+
+    min_value = 9999999999
+    min_day = 0
+
+    while end_date > start_date:
+
+        current_day = client.get_date(end_date)
+        print()
+        print(end_date)
+        try:
+            totals = current_day.totals
+            print(totals)
+            calories = totals['calories']
+            if calories > MIN_CALORIE:
+                if totals[nutrient] < min_value:
+                    min_value = totals[nutrient]
+                    min_day = end_date
+
+        except KeyError:
+            pass
+
+        end_date -= timedelta(days=1)
+
+    return min_day
 
 # --------------------------------------Start of testing--------------------------------------
 
-date1 = datetime.date.today() - timedelta(days=80)
-date2 = datetime.date.today() - datetime.timedelta(days=45)
-print(find_day_max('calories', date2, date1))
-
+date1 = datetime.date.today() - timedelta(days=1)
+date2 = datetime.date.today() - datetime.timedelta(days=14)
+start = time.time()
+bad_day = find_day_min('protein', date2, date1)
+print(bad_day)
+print(client.get_date(bad_day).totals)
+end = time.time()
+print('Timer: ' + str(end - start) + ' seconds')
 quit()
 
 day = client.get_date(datetime.date.today())  # (year, month, day) format

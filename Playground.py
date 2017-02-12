@@ -7,11 +7,21 @@ from datetime import timedelta
 
 sharif = 'samin100'
 issa = 'aladdin_heems'
+NUTRIENTS = ['calories', 'carbohydrates', 'fat', 'protein', 'sodium', 'sugar']
+MIN_CALORIE = 1500  # a day must have more than this amount of calories to be counted as valid
+print()
 
 client = myfitnesspal.Client(sharif)
 
 
-def calculate_average_daily(nutrient, start_date, end_date):  # calories, carbohydrates, fat, protein, sodium, sugar
+def calculate_average_daily(nutrient, start_date, end_date):
+    """
+    Calculates the daily average of a given nutrient across a date range.
+    :param nutrient: should be one of the following strings: calories, carbohydrates, fat, protein, sodium, sugar
+    :param start_date: must be a datetime date object
+    :param end_date: must be a datetime date object
+    :return: int
+    """
 
     # swaps dates if they were given backwards
     if start_date > end_date:
@@ -25,7 +35,7 @@ def calculate_average_daily(nutrient, start_date, end_date):  # calories, carboh
         current_day = client.get_date(end_date)
         try:
             calories = current_day.totals['calories']
-            if calories > 1500:
+            if calories > MIN_CALORIE:
                 total += current_day.totals[nutrient]
                 valid_days += 1
 
@@ -35,13 +45,20 @@ def calculate_average_daily(nutrient, start_date, end_date):  # calories, carboh
         end_date -= timedelta(days=1)
     return round(total / valid_days)
 
+
 def calculate_average_macro_ratio(start_date, end_date):
+    """
+    Calculates the average macronutrient ratio across a date range.
+    :param start_date: datetime date object
+    :param end_date: datetime date object
+    :return: a dictionary containing each macro's ratio
+    """
+
     # swaps dates if they were given backwards
     if start_date > end_date:
         start_date, end_date = end_date, start_date
 
     macro_totals = {'carbohydrates': 0, 'fat': 0, 'protein': 0}
-
     valid_days = 0
 
     while end_date > start_date:
@@ -49,13 +66,11 @@ def calculate_average_macro_ratio(start_date, end_date):
         current_day = client.get_date(end_date)
         try:
             calories = current_day.totals['calories']
-            if calories > 1500:
-                print(end_date)
+            if calories > MIN_CALORIE:
                 macro_totals['carbohydrates'] += current_day.totals['carbohydrates']
-                macro_totals['fat'] = current_day.totals['fat']
-                macro_totals['protein'] = current_day.totals['protein']
+                macro_totals['fat'] += current_day.totals['fat']
+                macro_totals['protein'] += current_day.totals['protein']
                 valid_days += 1
-                pprint.pprint(macro_totals)
 
         except KeyError:
             pass
@@ -67,25 +82,60 @@ def calculate_average_macro_ratio(start_date, end_date):
     for key, value in macro_totals.items():
         final_macro_total += value
 
-    print('Final macro total: ' + str(final_macro_total))
-
-
     macro_ratios = {'carbohydrates': 0, 'fat': 0, 'protein': 0}
+    completed_total = 0
 
     for key, value in macro_totals.items():
-        print(key + ' ' + str(value))
-        print(value / final_macro_total)
+        macro_ratios[key] = round(100 * (value / final_macro_total))
+        completed_total += macro_ratios[key]
+
+    return macro_ratios
 
 
+def find_day_max(nutrient, start_date, end_date):
+    """
+    Locates the day in a given range which has the max nutrient.
+    :param nutrient: should be one of the following strings: calories, carbohydrates, fat, protein, sodium, sugar
+    :param start_date: datetime date object
+    :param end_date: datetime date object
+    :return: a datetime date object
+    """
 
-    pprint.pprint(macro_ratios)
+    # swaps dates if they were given backwards
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+
+    max_value = -1
+    max_day = 0
+
+    while end_date > start_date:
+
+        current_day = client.get_date(end_date)
+        print()
+        print(end_date)
+        try:
+            totals = current_day.totals
+            print(totals)
+            calories = totals['calories']
+            if calories > MIN_CALORIE:
+                if totals[nutrient] > max_value:
+                    max_value = totals[nutrient]
+                    max_day = end_date
+
+        except KeyError:
+            pass
+
+        end_date -= timedelta(days=1)
+
+    return (max_day, client.get_date(max_day).totals)
+
 
 
 # --------------------------------------Start of testing--------------------------------------
 
-date1 = datetime.date.today() - timedelta(days=1)
-date2 = datetime.date.today() - datetime.timedelta(days=7)
-calculate_average_macro_ratio(date1, date2)
+date1 = datetime.date.today() - timedelta(days=80)
+date2 = datetime.date.today() - datetime.timedelta(days=45)
+print(find_day_max('calories', date2, date1))
 
 quit()
 

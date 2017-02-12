@@ -133,3 +133,12 @@ class User(object):  # python classes inherit from the object class
         :return: dictionary of meals
         """
         return self.client.get_date(date).get_as_dict()
+
+    def get_nutrient_values(self, nutrient, start_date, end_date):
+        """
+        Generates a dictionary with the date being the key and the value being the nutrient value
+        :param nutrient: should be one of the following strings: calories, carbohydrates, fat, protein, sodium, sugar
+        :param start_date: must be a datetime date object
+        :param end_date: must be a datetime date object
+        :return: dictionary
+        """

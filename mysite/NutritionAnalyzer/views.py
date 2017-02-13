@@ -5,4 +5,4 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return render(request, 'NutritionAnalyzer/home.html', )
+    return render(request, 'NutritionAnalyzer/home.html', {'content': ['If you would like to contact me please email me', 'samin100@gmail.com']})

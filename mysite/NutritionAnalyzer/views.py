@@ -6,3 +6,13 @@ from django.http import HttpResponse
 
 def index(request):
     return render(request, 'NutritionAnalyzer/home.html', {'content': ['If you would like to contact me please email me', 'samin100@gmail.com']})
+
+
+def analysis(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        date = request.POST['date']
+        print(username)
+        print(password)
+        print(date)

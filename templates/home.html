@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>MFP Analyzer</title>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/custom/main.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <h1>MFP Nutrition Analyzer</h1>
+    <h3>Tools that can help you reach your nutrition goals!</h3>
+    {% block body %}
+    {% if session['logged_in'] %}
+    <p> You are logged in</p>
+    {% else %}
+    <form action="/login" method="POST">
+    <h5>MyFitnessPal Username</h5>
+    <input type="username" name="username" placeholder="Username">
+    <h5>MyFitnessPal Password</h5>
+    <input type="password" name="password" placeholder="Password">
+    <h5>Nutrient</h5>
+    <select name="nutrient">
+      <option value="calories">Calories</option>
+      <option value="carbohydrates">Carbohydrates</option>
+      <option value="fat">Fat</option>
+      <option value="protein">Protein</option>
+      <option value="sodium">Sodium</option>
+      <option value="sugar">Sugar</option>
+    </select>
+
+  </br></br>
+    <input type="submit" value="Log in">
+  </form>
+
+
+  {% endif %}
+
+
+
+  {% endblock %}
+  </body>
+
+</html>

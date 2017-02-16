@@ -11,7 +11,8 @@ class User(object):  # python classes inherit from the object class
         :param client: myfitnesspal client object
         """
         self.client = client
-        self.MIN_CALORIE = 1000
+        self.MIN_CALORIE = 900
+
 
     def calculate_average_daily(self, nutrient, start_date, end_date):
         """
@@ -25,6 +26,9 @@ class User(object):  # python classes inherit from the object class
         # swaps dates if they were given backwards
         if start_date > end_date:
             start_date, end_date = end_date, start_date
+
+        if start_date == end_date:
+            return self.client.get_date(start_date).totals[nutrient]
 
         total = 0
         valid_days = 0
@@ -42,7 +46,10 @@ class User(object):  # python classes inherit from the object class
                 pass
 
             end_date -= timedelta(days=1)
-        return round(total / valid_days)
+        if valid_days > 0:
+            return round(total / valid_days)
+        else:
+            return 0
 
     def calculate_average_macro_ratio(self, start_date, end_date):
         """

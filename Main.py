@@ -6,13 +6,6 @@ from pprint import pprint
 
 start = time.time()
 samin = Nutrition.User(myfitnesspal.Client('samin100'))
+print(samin)
+print(samin.calculate_average_daily('carbohydrates', date.today(), date.today()))
 
-meals = samin.get_meals(date.today())
-for meal in meals:
-    print(meal + ': ')
-    for item in meals[meal]:
-        print(item['name'])
-    print()
-
-end = time.time()
-print('Completed: ' + str(end - start) + ' seconds')

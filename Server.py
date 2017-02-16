@@ -11,11 +11,10 @@ app = Flask(__name__)
 # home page
 @app.route('/')
 def home():
-    print('home')
     if not session.get('logged_in'):
         return render_template('home.html')
     else:
-        return 'Logged in'
+        return login
 
 
 # login information
@@ -29,8 +28,9 @@ def login():
         print('trying to log in with MFP data')
         client = myfitnesspal.Client(username=request.form['username'], password=request.form['password'])
         user = Nutrition.User(client)
-        return str('Your ' + nutrient + ' total: ' + str(user.calculate_average_daily(request.form['nutrient'], date.today(), date.today())))
-
+        session['logged_in'] = True
+        return render_template('home.html', context={'nutrient': nutrient, 'value': str(user.calculate_average_daily(request.form['nutrient'], date.today(), date.today()-timedelta(days=120)))})  # pass the context as a dict
+        # return str('Your ' + nutrient + ' average for 10 days: ' + str(user.calculate_average_daily(request.form['nutrient'], date.today(), date.today()-timedelta(days=10))))
 
     except ValueError:
         print('error')

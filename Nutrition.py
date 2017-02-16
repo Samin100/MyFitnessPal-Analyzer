@@ -38,6 +38,9 @@ class User(object):  # python classes inherit from the object class
             current_day = self.client.get_date(end_date)
             try:
                 calories = current_day.totals['calories']
+                print()
+                print(current_day)
+                print(current_day.totals)
                 if calories > self.MIN_CALORIE:
                     total += current_day.totals[nutrient]
                     valid_days += 1

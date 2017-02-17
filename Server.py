@@ -24,13 +24,17 @@ def login():
 
     try:
         print(request.form)
+        print(type(request.form['days']))
         nutrient = request.form['nutrient']
         print('trying to log in with MFP data')
         client = myfitnesspal.Client(username=request.form['username'], password=request.form['password'])
         user = Nutrition.User(client)
         session['logged_in'] = True
-        return render_template('home.html', context={'nutrient': nutrient, 'value': str(user.calculate_average_daily(request.form['nutrient'], date.today(), date.today()-timedelta(days=120)))})  # pass the context as a dict
-        # return str('Your ' + nutrient + ' average for 10 days: ' + str(user.calculate_average_daily(request.form['nutrient'], date.today(), date.today()-timedelta(days=10))))
+        print('RENDER TEMPLATE')
+
+        return render_template('home.html', context=
+        {'nutrient': nutrient, 'days': request.form['days'], 'value': user.calculate_average_daily(request.form['nutrient'],
+            date.today(), date.today()-timedelta(days=int(request.form['days']))), 'meals': user.get_meals(date.today())})  # pass the context as a dict
 
     except ValueError:
         print('error')

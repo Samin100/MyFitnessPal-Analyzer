@@ -17,7 +17,19 @@
     {% block body %}
     {% if session['logged_in'] %}
     <h5> You are logged in</h5>
-      <p>Your 120 day average for {{ context['nutrient'] }} is {{context['value']}}. </p>
+    <p>Click here to <a href="/logout">logout.</a>
+    <p>Your {{ context['days'] }} day average for {{ context['nutrient'] }} is {{ context['value'] }}. </p>
+    </br>
+    {% for meal, foods in context['meals'].items() %}
+      <strong>{{meal}}:</strong>
+
+      <ul>
+        {% for food in foods %}
+        <li>{{food.name}}</li>
+        {% endfor %}
+
+      </ul>
+    {% endfor %}
     {% else %}
     <form action="/login" method="POST">
       <h5>MyFitnessPal Username</h5>
@@ -33,7 +45,8 @@
         <option value="sodium">Sodium</option>
         <option value="sugar">Sugar</option>
       </select>
-      <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
+      <h5>Number of Days</h5>
+      <input type="number" name="days" placeholder="Number of Days">
     </br></br>
     <button type="submit" class="btn btn-primary">Log In</button>
   </form>

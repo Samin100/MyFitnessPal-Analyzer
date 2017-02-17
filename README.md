@@ -1,23 +1,20 @@
 # Introduction
-Tools for analyzing and providing insights on a user's MyFitnessPal data through coddingtonbear's unofficial MFP API. Once the backend has been fleshed out I will develop it into a web application for others to use.
+This is a Flask based web application for MyFitnessPal users that allows them to analyze and visualize their nutrition and meal data through <a href="https://github.com/coddingtonbear/python-myfitnesspal">coddingtonbear's python-myfitnesspal API</a>. As of now the analysis is straightforward but over time it will scale to include more detailed data insights to help users reach their fitness goals.
 
-# Frameworks, APIs, and tools
-<ol>
-  <li>The backend will be written in Python and use coddingtonbear's API found at https://github.com/coddingtonbear/python-myfitnesspal.</li>
-  <li>In addition, charting libraries will be required to plot the nutrition data. For the web app portion, maybe Flask or Django. I'm learning towards Django since we'll require user authentication for their MFP account.</li>
-</ol>
+# Overview
+<ul>
+  <li>Nutrition.py is a wrapper library for the unofficial MFP API. This file includes commonly used functions such as ```calculate_average_daily``` and ```calculate_average_macro_ratio``` and more. This is where the majority of the MyFitnessPal data analysis will occur and as the application scales I'll add more functionality as needed.</li>
+  <li>The server backend runs Flask based and can be found in Server.py.</li>
+  <li>Frontend is an implementation of the clean Bootstrap 3 theme <a href="https://github.com/puikinsh/gentelella">Gentelella</a>. </li>
+</ul>
+
+# Current state
+Planning is complete and the backend in Nutrition.py is about 90% fleshed out. Currently working on building the HTML pages and CSS. Also grappling with the most secure way to deal with user authentication considering I would not want to store MyFitnessPal passwords on the server so I'm looking into <a href="https://github.com/maxcountryman/flask-login">Flask-Login</a> for user session management.
 
 # TODO
-This application is in the planning stage. The data we have is essentially what someone eats, it's nutritional values, and that person's nutritional goals. With this we can display interesting statistics regarding a person's eating habits (ideal vs realistic, etc).
-
-Here's a list of features to be implemented:
-
-<ol>
-  <li>calorie averages (weekly/monthly/custom period)</li>
-  <li>most common food/meal</li>
-  <li>highest/lowest calorie days</li>
-  <li>macronutrient ratios</li>
-  <li>caloric/macro consumption plots
-  <li> general nutritional analysis -> open to interpretation</li>
-</ol>
-Feel free to recommend any tools or insights that should be added.
+<ul>
+  <li>Implement 2 more functions in Nutrition.py</li>
+  <li>Complete HTML and CSS changes to Gentelella</li>
+  <li>Research the best way to implement a Single Page Application</li>
+  <li>Implement a Single Page Application</li>
+</ul>

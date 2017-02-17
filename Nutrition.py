@@ -142,7 +142,10 @@ class User(object):  # python classes inherit from the object class
         :param date: datetime date object
         :return: dictionary of meals
         """
-        return self.client.get_date(date).get_as_dict()
+
+        day_meals = self.client.get_date(date).get_as_dict()
+        print(type(day_meals))
+        return day_meals
 
     def get_nutrient_values(self, nutrient, start_date, end_date):
         """

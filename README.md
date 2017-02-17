@@ -3,7 +3,7 @@ This is a Flask based web application for MyFitnessPal users that allows them to
 
 # Overview
 <ul>
-  <li>Nutrition.py is a wrapper library for the unofficial MFP API. This file includes commonly used functions such as ```calculate_average_daily``` and ```calculate_average_macro_ratio``` and more. This is where the majority of the MyFitnessPal data analysis will occur and as the application scales I'll add more functionality as needed.</li>
+  <li>Nutrition.py is a wrapper library for the unofficial MFP API. This file includes commonly used functions such as `calculate_average_daily` and `calculate_average_macro_ratio` and more. This is where the majority of the MyFitnessPal data analysis will occur and as the application scales I'll add more functionality as needed.</li>
   <li>The server backend runs Flask based and can be found in Server.py.</li>
   <li>Frontend is an implementation of the clean Bootstrap 3 theme <a href="https://github.com/puikinsh/gentelella">Gentelella</a>. </li>
 </ul>

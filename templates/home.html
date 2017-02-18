@@ -16,10 +16,13 @@
 
     {% block body %}
     {% if session['logged_in'] %}
-    <h5> You are logged in</h5>
-    <p>Click here to <a href="/logout">logout.</a>
-    <p>Your {{ context['days'] }} day average for {{ context['nutrient'] }} is {{ context['value'] }}. </p>
-    </br>
+    <p> You are logged in. Click here to <a href="/logout">logout.</a>
+  </br>
+    <p>It took {{context['load_time']}} seconds to pull your data.</p>
+  </br>
+    Your {{ context['days'] }} day average for {{ context['nutrient'] }} is {{ context['value'] }}. </p>
+  </hr>
+    <h4>Today's Meals</h4>
     {% for meal, foods in context['meals'].items() %}
       <strong>{{meal}}:</strong>
 

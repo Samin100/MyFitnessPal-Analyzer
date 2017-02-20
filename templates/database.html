@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Database Test</title>
+</head>
+<body>
+  <ul id="Users">
+  {% for user in context %}
+      <li>{{ user.Name }}</li>
+  {% endfor %}
+  </ul>
+
+</body>
+</html>

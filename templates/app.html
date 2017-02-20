@@ -62,8 +62,8 @@
 
 
                   </div></span>
-              GainStats for samin100
-              <span class="logout"><a href="/">Logout</a></span>
+              GainStats for {{session['username']}}
+              <span class="logout"><a href="/logout">Logout</a></span>
             </h3></div>
 
           </div>
@@ -314,21 +314,10 @@
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320 overflow_hidden">
                 <div class="x_title">
-                  <h2>Device Usage</h2>
+                  <h2>Macronutrient Averages</h2>
                   <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings 1</a>
-                        </li>
-                        <li><a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li><a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>
+
+
                   </ul>
                   <div class="clearfix"></div>
                 </div>
@@ -336,14 +325,14 @@
                   <table class="" style="width:100%">
                     <tr>
                       <th style="width:37%;">
-                        <p>Top 5</p>
+                        <p></p>
                       </th>
                       <th>
                         <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                          <p class="">Device</p>
+                          <p class=""></p>
                         </div>
                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-                          <p class="">Progress</p>
+                          <p class=""></p>
                         </div>
                       </th>
                     </tr>
@@ -355,33 +344,22 @@
                         <table class="tile_info">
                           <tr>
                             <td>
-                              <p><i class="fa fa-square blue"></i>IOS </p>
+                              <p><i class="fa fa-square blue"></i>Carbohydrates </p>
                             </td>
-                            <td>30%</td>
+                            <td>90%</td>
                           </tr>
                           <tr>
                             <td>
-                              <p><i class="fa fa-square green"></i>Android </p>
+                              <p><i class="fa fa-square green"></i>Protein </p>
                             </td>
-                            <td>10%</td>
+                            <td>2%</td>
                           </tr>
+
                           <tr>
                             <td>
-                              <p><i class="fa fa-square purple"></i>Blackberry </p>
+                              <p><i class="fa fa-square red"></i>Fat </p>
                             </td>
-                            <td>20%</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <p><i class="fa fa-square aero"></i>Symbian </p>
-                            </td>
-                            <td>15%</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <p><i class="fa fa-square red"></i>Others </p>
-                            </td>
-                            <td>30%</td>
+                            <td>4%</td>
                           </tr>
                         </table>
                       </td>
@@ -466,7 +444,8 @@
     <script src="../static/vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="../static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-
+    <!-- FastClick -->
+    <script src="../static/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="../static/vendors/nprogress/nprogress.js"></script>
     <!-- Chart.js -->
@@ -479,6 +458,19 @@
     <script src="../static/vendors/iCheck/icheck.min.js"></script>
     <!-- Skycons -->
     <script src="../static/vendors/skycons/skycons.js"></script>
+
+
+
+    <!-- Flot -->
+    <script src="../static/vendors/Flot/jquery.flot.js"></script>
+    <script src="../static/vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="../static/vendors/Flot/jquery.flot.time.js"></script>
+    <script src="../static/vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="../static/vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="../static/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="../static/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="../static/vendors/flot.curvedlines/curvedLines.js"></script>
 
     <!-- DateJS -->
     <script src="../static/vendors/DateJS/build/date.js"></script>

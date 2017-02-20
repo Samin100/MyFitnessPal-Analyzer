@@ -12,7 +12,7 @@ NUTRIENTS = ['calories', 'carbohydrates', 'fat', 'protein', 'sodium', 'sugar']
 MIN_CALORIE = 1500  # a day must have more than this amount of calories to be counted as valid
 print()
 
-client = myfitnesspal.Client(sharif)
+client = myfitnesspal.Client('test', password='test')
 
 
 def calculate_average_daily(nutrient, start_date, end_date):

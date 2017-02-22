@@ -27,6 +27,7 @@ class User(object):  # python classes inherit from the object class
         if start_date > end_date:
             start_date, end_date = end_date, start_date
 
+
         if start_date == end_date:
             return self.client.get_date(start_date).totals[nutrient]
 
@@ -154,3 +155,13 @@ class User(object):  # python classes inherit from the object class
         :param end_date: must be a datetime date object
         :return: dictionary
         """
+
+    def get_day(self, date):
+        '''
+        Returns a dictionary of meals from the start date to the end date.
+        :param date: datetime date object
+        :return: returns a dictionary in the form {meals: mealdata, totals: totaldata}
+        '''
+
+        return {'meals': self.get_meals(date), 'totals': self.client.get_date(date).totals}
+

@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import flask_login
 from myfitnesspal import Client
 import os
-
+from datetime import date, timedelta
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -60,12 +60,31 @@ def login():
 
 @app.route('/logout')
 def logout():
-    print('ABOUT TO LOG OUT')
-    print(session)
     session.pop('username')
-    print(session)
     return redirect('/')
+
+
+def load_2_months():
+    '''
+    Loads the past 61 days of data into the user's database. If a day already exists then it will be overwritten.
+    :return: None
+    '''
+
+    today = date.today()
+    end = date.today() - timedelta(days=3)
+
+    while today > end:
+        db.update_one({'username': session['username']}, {'$set':{('data.' + end)}})
+        end += timedelta(days=1)
+
+
+def verify_2_months():
+    '''
+    Checks whether the past 61 days of data have been loaded into the database
+    :return: Boolean
+    '''
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+

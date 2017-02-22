@@ -1,25 +1,18 @@
+import myfitnesspal
+import Nutrition
+from datetime import date, timedelta
 from pprint import pprint
 from pymongo import MongoClient
 
+client = myfitnesspal.Client('samin100')
+user = Nutrition.User(client)
 
-client = MongoClient('mongodb://localhost:27017/')
-
-corolla = {
-        'manufacturer': 'Toyota',
-        'class': 'sedan',
-        'designer':{
-            'firstname': 'Atoyotoya',
-            'surname': 'von Corolla'
-        },
-         'assembly':{
-             'country': 'Japan',
-             'city: ': 'Tokyo',
-             'state': ''
-         }}
-
-db = client.examples
-#db.autos.insert(corolla)
+pprint(user.get_day(date.today() - timedelta(days=1)))
 
 
-print('FOUND ONE')
-pprint(db.autos.find_one({'manufacturer': 'Tesla Motors'}))
+client = MongoClient()
+db = client.GainStats.users
+
+
+print(db.find_one({'username': 'samin100'}))
+

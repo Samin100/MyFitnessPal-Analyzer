@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, redirect, session, url_for
 from pymongo import MongoClient
-import flask_login
 from myfitnesspal import Client
 import os
 from datetime import date, timedelta
+import Nutrition
 
+
+# config stuff
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 client = MongoClient()
@@ -23,13 +25,21 @@ def index():
 @app.route('/app')
 def load_app():
     if 'username' in session:
+        smart_load()
         return render_template('app.html')
+
     else:
         return redirect('/')
 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
+    """
+    Route for the login page. Will validate credentials on POST, and redirect to '/' on GET. If credentials are valid
+    user will get redirected to app and if invalid redirected to '/'.
+    :return: A redirect to '/' or 'app'
+    """
+
     if request.method == 'GET':  # if they navigate to /login they get redirected to /
         return redirect('/')
     else:
@@ -37,7 +47,7 @@ def login():
         inputted_username = request.form['username']
         inputted_password = request.form['password']
 
-        try:  # valid login
+        try:  # validate login
             MFP_client = Client(username=inputted_username, password=inputted_password)
 
         except ValueError:  # invalid login
@@ -53,7 +63,11 @@ def login():
         else:
             print(inputted_username + ' already exists in the database.')
 
-        session['username'] = inputted_username
+            if existing_user['password'] != inputted_password:  # updating their password if it's changed
+                db.update_one({'username': inputted_username},
+                              {'$set': {'password': inputted_password}})
+
+        session['username'] = inputted_username  #adding their username to the session
         print(session)
         return redirect('/app')
 
@@ -64,27 +78,57 @@ def logout():
     return redirect('/')
 
 
-def load_2_months():
-    '''
+def initial_load():
+    """
     Loads the past 61 days of data into the user's database. If a day already exists then it will be overwritten.
+    This should only be ran on creation of the user's database object, aka their initial login.
     :return: None
-    '''
+    """
+
+    db_user = db.find_one({'username': session['username']})  # pulls session user from the database
+    print(db_user)
+
+    mfp_client = Client(username=session['username'], password=db_user['password'])  # creates a MFP client from the database credentials
+    nutrition_user = Nutrition.User(mfp_client)  # creates a Nutrition User with the MFP client
 
     today = date.today()
-    end = date.today() - timedelta(days=3)
+    end = date.today() - timedelta(days=61)  # remember to change this to 61 after development
 
-    while today > end:
-        db.update_one({'username': session['username']}, {'$set':{('data.' + end)}})
+    while today >= end:
+        db.update_one({'username': session.get('username')}, {'$set': {('data.' + str(end)): nutrition_user.get_day(end)}})
+        print('Added ' + str(end) + ' to ' + db_user['username'] +' meal database.')
         end += timedelta(days=1)
 
 
-def verify_2_months():
-    '''
-    Checks whether the past 61 days of data have been loaded into the database
-    :return: Boolean
-    '''
+def smart_load():
+    """
+    Loops through the past 61 days in the user's database, and if a day is missing then it will get added, otherwise no
+    action will be taken. This should be run on every login to ensure the most recent data is loaded.
+    :return: None
+    """
+
+    today = date.today()
+    end = date.today() - timedelta(days=61)  # remember to change this to 61 after development
+    db_user = db.find_one({'username': session['username']})  # links to the current user's database
+    mfp_client = Client(username=session['username'], password=db_user['password'])  # creates a MFP client from the database credentials
+    nutrition_user = Nutrition.User(mfp_client)  # creates a Nutrition User with the MFP client
+
+    while today >= end:
+
+        try:
+            # see if it exists
+            day = db_user['data'][str(end)]
+            print(str(end) + ' is loaded.')
+
+        except KeyError:  # if the day has not been loaded
+            print(str(end) + ' is missing from the database. We will update it now.')
+            db.update_one({'username': session.get('username')},
+                          {'$set': {('data.' + str(end)): nutrition_user.get_day(end)}})
+
+
+        end += timedelta(days=1)  # increment the day
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
 

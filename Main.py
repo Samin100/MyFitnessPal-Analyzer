@@ -8,6 +8,8 @@ from pymongo import MongoClient
 client = MongoClient()
 db = client.GainStats.users
 
+samin = db.find_one({'username': 'samin100'})
 
-pprint(db.find_one({'username': 'samin100'}))
+
+pprint(samin['valid_value'])
 

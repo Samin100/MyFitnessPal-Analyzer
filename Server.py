@@ -25,7 +25,7 @@ def index():
 @app.route('/app')
 def load_app():
     if 'username' in session:
-        smart_load()
+        # smart_load()
         return render_template('app.html')
 
     else:
@@ -48,7 +48,7 @@ def login():
         inputted_password = request.form['password']
 
         try:  # validate login
-            MFP_client = Client(username=inputted_username, password=inputted_password)
+            mfp_client = Client(username=inputted_username, password=inputted_password)
 
         except ValueError:  # invalid login
             print('invalid login')
@@ -57,8 +57,8 @@ def login():
         print('valid login')
         existing_user = db.find_one({'username': inputted_username})
 
-        if existing_user is None:  # if user is not in database
-            db.insert({"username": inputted_username, 'password': inputted_password})
+        if existing_user is None:  # initializes user
+            db.insert({"username": inputted_username, 'password': inputted_password, 'valid_value': 1000})
             print('Created the user: ' + db.find_one({'username': inputted_username}))
         else:
             print(inputted_username + ' already exists in the database.')
@@ -108,7 +108,7 @@ def smart_load():
     """
 
     today = date.today()
-    end = date.today() - timedelta(days=61)  # remember to change this to 61 after development
+    end = date.today() - timedelta(days=1)  # remember to change this to 61 after development
     db_user = db.find_one({'username': session['username']})  # links to the current user's database
     mfp_client = Client(username=session['username'], password=db_user['password'])  # creates a MFP client from the database credentials
     nutrition_user = Nutrition.User(mfp_client)  # creates a Nutrition User with the MFP client
@@ -125,8 +125,22 @@ def smart_load():
             db.update_one({'username': session.get('username')},
                           {'$set': {('data.' + str(end)): nutrition_user.get_day(end)}})
 
-
         end += timedelta(days=1)  # increment the day
+
+
+@app.route('/vdv', methods=['POST', 'GET'])
+def set_valid_value():
+    print('VDV')
+    if request.method == 'GET':
+        return redirect('/')
+    else:
+        print(request.form)
+        return redirect('/app')
+        db.update_one({'username': session['username']},
+                      {'$set': {'valid_value': int(request.form['valid_value'])}})
+
+
+
 
 
 if __name__ == '__main__':

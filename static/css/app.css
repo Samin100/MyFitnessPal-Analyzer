@@ -21,6 +21,17 @@ footer{
   margin-left: 0px;
 }
 
+.modal-content{
+  white-space: initial;
+}
+
+.modal-body h4{
+  text-align: center;
+}
+
+.vdv{
+  text-align: center;
+}
 
 .nav_menu{
   height: 60px;

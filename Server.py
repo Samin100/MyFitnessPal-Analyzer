@@ -47,7 +47,7 @@ def login():
         inputted_username = request.form['username']
         inputted_password = request.form['password']
 
-        try:  # validate login
+        try:  # validate login - look for a better way to test if login is valid
             mfp_client = Client(username=inputted_username, password=inputted_password)
 
         except ValueError:  # invalid login
@@ -57,7 +57,7 @@ def login():
         print('valid login')
         existing_user = db.find_one({'username': inputted_username})
 
-        if existing_user is None:  # initializes user
+        if existing_user is None:  # initializes user - full user initialization will take place in this block
             db.insert({"username": inputted_username, 'password': inputted_password, 'valid_value': 1000})
             print('Created the user: ' + db.find_one({'username': inputted_username}))
         else:

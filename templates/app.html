@@ -47,7 +47,7 @@
                       Pull New Data <span class="caret"></span>
                     </button>
                     <ul role="menu" class="dropdown-menu">
-                      
+
                       <!-- Look into better date increments for pulling new data -->
                       <li><a href="#">Pull Today</a>
                       </li>
@@ -145,7 +145,7 @@
                       </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default" data-dismiss="modal">Exit</button>
-                          <button type="submit" class="btn btn-primary">Update</button>
+                          <button type="submit" data-dismiss="modal" onclick="return vdvUpdate()" class="btn btn-primary">Update</button>
                           </form>
                         </div>
 
@@ -476,6 +476,9 @@
         <!-- /footer content -->
       </div>
     </div>
+
+    <!-- Custom app.js functions -->
+    <script src="../static/js/app.js"></script>
 
     <!-- jQuery -->
     <script src="../static/vendors/jquery/dist/jquery.min.js"></script>

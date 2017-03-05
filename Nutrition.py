@@ -27,7 +27,6 @@ class User(object):  # python classes inherit from the object class
         if start_date > end_date:
             start_date, end_date = end_date, start_date
 
-
         if start_date == end_date:
             return self.client.get_date(start_date).totals[nutrient]
 

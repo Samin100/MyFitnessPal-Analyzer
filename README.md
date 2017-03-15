@@ -6,7 +6,7 @@ This is a data analysis library and Flask based web application for MyFitnessPal
 transfered to `server.py` upon completion.
 - The server backend runs Flask based and can be found in Server.py.
 - Frontend is an implementation of the clean Bootstrap 3 theme <a href="https://github.com/puikinsh/gentelella">Gentelella</a> and uses JQuery for
-sending AJAX responses to the Flask REST API.
+sending AJAX requests to the Flask REST API.
 
 # Current state
 I'm researching more detailed data analysis techniques and looking into implementing

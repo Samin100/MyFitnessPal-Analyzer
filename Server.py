@@ -4,7 +4,7 @@ from myfitnesspal import Client
 import os
 from datetime import date, timedelta
 import Nutrition
-
+from pprint import pprint
 
 # config stuff
 app = Flask(__name__)
@@ -35,9 +35,9 @@ def load_app():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     """
-    Route for the login page. Will validate credentials on POST, and redirect to '/' on GET. If credentials are valid
-    user will get redirected to app and if invalid redirected to '/'.
-    :return: A redirect to '/' or 'app'
+    Route for the login page. Will validate credentials on POST, and redirect to / on GET. If credentials are valid
+    user will get redirected to /app and if invalid redirected to /.
+    :return: A redirect to / or app
     """
 
     if request.method == 'GET':  # if they navigate to /login they get redirected to /
@@ -74,14 +74,20 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('username')
+    """
+    Logs out a user.
+    :return: Redirect to /
+    """
+    if 'username' in session:
+        session.pop('username')
+
     return redirect('/')
 
 
 def initial_load():
     """
-    Loads the past 61 days of data into the user's database. If a day already exists then it will be overwritten.
-    This should only be ran on creation of the user's database object, aka their initial login.
+    Loads the past 61 days of data into the user's database document. If a day already exists then it will be overwritten.
+    This should only be ran on creation of the user's database object (their initial login).
     :return: None
     """
 
@@ -92,11 +98,11 @@ def initial_load():
     nutrition_user = Nutrition.User(mfp_client)  # creates a Nutrition User with the MFP client
 
     today = date.today()
-    end = date.today() - timedelta(days=61)  # remember to change this to 61 after development
+    end = date.today() - timedelta(days=61)  # remember to change this to 61 after testing
 
     while today >= end:
         db.update_one({'username': session.get('username')}, {'$set': {('data.' + str(end)): nutrition_user.get_day(end)}})
-        print('Added ' + str(end) + ' to ' + db_user['username'] +' meal database.')
+        print('Added ' + str(end) + ' to ' + db_user['username'] + ' meal database.')
         end += timedelta(days=1)
 
 
@@ -115,13 +121,12 @@ def smart_load():
 
     while today >= end:
 
-        try:
-            # see if it exists
+        try: # see if a day exists in the database
             day = db_user['data'][str(end)]
             print(str(end) + ' is loaded.')
 
         except KeyError:  # if the day has not been loaded
-            print(str(end) + ' is missing from the database. We will update it now.')
+            print(str(end) + ' is missing - updating now...')
             db.update_one({'username': session.get('username')},
                           {'$set': {('data.' + str(end)): nutrition_user.get_day(end)}})
 
@@ -140,7 +145,20 @@ def set_valid_value():
                       {'$set': {'valid_value': int(request.form['valid_value'])}})
 
 
+@app.route('/database')
+def database():
+    """
+    Renders database.html with a list of users in the database. Used as a templating test.
+    :return: renders database.html
+    """
 
+    cursor = db.find()
+    db_users = []
+
+    for document in cursor:
+        db_users.append(document['username'])
+
+    return render_template('database.html', users=db_users)
 
 
 if __name__ == '__main__':

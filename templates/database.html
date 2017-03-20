@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Database Test</title>
+    <title>GainStats Database</title>
+    <link href="../static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
-  <ul id="Users">
-  {% for user in context %}
-      <li>{{ user.Name }}</li>
-  {% endfor %}
-  </ul>
-
+  <div class="container">
+    <h2>GainStats Users</h2>
+    <ul class="list-group">
+      {% for user in users %}
+      <li class="list-group-item">{{user}}</li>
+      {% endfor %}
+    </ul>
+</div>
 </body>
 </html>

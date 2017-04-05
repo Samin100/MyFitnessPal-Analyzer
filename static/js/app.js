@@ -13,3 +13,6 @@ function vdvUpdate(){
   };
   console.log("Submitted " + calories);
 }
+
+/*TODO: Implement AJAX with JQuery to allow for asynchronous requests and dynamic
+charts with Chart.js */
